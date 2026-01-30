@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hangman</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      margin-top: 30px;
+      color: #333;
+    }
+
+    .word {
+      margin-top: 30px;
+      font-size: 32px;
+      letter-spacing: 10px;
+      font-weight: bold;
+    }
+
+    .letters {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: repeat(13, 40px);
+      gap: 10px;
+    }
+
+    .letter-btn {
+      width: 40px;
+      height: 40px;
+      background: white;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .letter-btn:hover {
+      background: #eee;
+    }
+
+    .letter-btn:disabled {
+      background: #ddd;
+      cursor: default;
+    }
+
+    .status {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      min-height: 28px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #eee;
+    }
+
+    .back-link {
+      margin-top: 25px;
+      text-decoration: none;
+      color: #0077cc;
+      font-weight: bold;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Hangman</h1>
+
+  <div class="word" id="word"></div>
+
+  <div class="letters" id="letters"></div>
+
+  <div class="status" id="status"></div>
+
+  <button id="resetBtn">New Game</button>
+
+  <a class="back-link" href="../index.html">← Back to Home</a>
+
+  <script>
+    // Words commonly found in Wikipedia articles
+    const words = [
+      "algorithm", "biodiversity", "civilization", "democracy", "evolution",
+      "galaxy", "hydrogen", "infrastructure", "jurisdiction", "kinetic",
+      "literature", "migration", "neuron", "oxygen", "philosophy",
+      "quantum", "renaissance", "sociology", "technology", "universe",
+      "volcano", "wavelength", "xenon", "yacht", "zeolite"
+    ];
+
+    let selectedWord = "";
+    let revealed = [];
+    let wrongGuesses = 0;
+    const maxWrong = 6;
+
+    const wordElement = document.getElementById("word");
+    const lettersElement = document.getElementById("letters");
+    const statusElement = document.getElementById("status");
+    const resetBtn = document.getElementById("resetBtn");
+
+    function startGame() {
+      selectedWord = words[Math.floor(Math.random() * words.length)];
+      revealed = Array(selectedWord.length).fill("_");
+      wrongGuesses = 0;
+
+      wordElement.textContent = revealed.join(" ");
+      statusElement.textContent = "";
+
+      lettersElement.innerHTML = "";
+      createLetterButtons();
+    }
+
+    function createLetterButtons() {
+      const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+      for (let char of alphabet) {
+        const btn = document.createElement("button");
+        btn.classList.add("letter-btn");
+        btn.textContent = char;
+        btn.addEventListener("click", () => guessLetter(char, btn));
+        lettersElement.appendChild(btn);
+      }
+    }
+
+    function guessLetter(letter, btn) {
+      btn.disabled = true;
+
+      const lower = letter.toLowerCase();
+      let found = false;
+
+      for (let i = 0; i < selectedWord.length; i++) {
+        if (selectedWord[i] === lower) {
+          revealed[i] = letter;
+          found = true;
+        }
+      }
+
+      if (!found) {
+        wrongGuesses++;
+      }
+
+      wordElement.textContent = revealed.join(" ");
+
+      checkGameStatus();
+    }
+
+    function checkGameStatus() {
+      if (!revealed.includes("_")) {
+        statusElement.textContent = "You win!";
+        disableAllButtons();
+        return;
+      }
+
+      if (wrongGuesses >= maxWrong) {
+        statusElement.textContent = `You lose! Word was: ${selectedWord}`;
+        disableAllButtons();
+      }
+    }
+
+    function disableAllButtons() {
+      const buttons = document.querySelectorAll(".letter-btn");
+      buttons.forEach(btn => btn.disabled = true);
+    }
+
+    resetBtn.addEventListener("click", startGame);
+
+    startGame();
+  </script>
+
+</body>
+</html>
