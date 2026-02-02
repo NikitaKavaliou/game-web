@@ -1,6 +1,6 @@
-import { play } from "hangman/js/sounds.js";
-import { updateDrawing, resetDrawing } from "hangman/js/drawing.js";
-import { initTheme } from "hangman/js/ui.js";
+import { play } from "./sounds.js";
+import { updateDrawing, resetDrawing } from "./drawing.js";
+import { initTheme } from "./ui.js";
 
 initTheme();
 
