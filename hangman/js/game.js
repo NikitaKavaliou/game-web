@@ -119,4 +119,23 @@ function disableAll() {
 document.getElementById("resetBtn").addEventListener("click", startGame);
 categoryEl.addEventListener("change", startGame);
 
+// --- PHYSICAL KEYBOARD SUPPORT ---
+document.addEventListener("keydown", (e) => {
+  const key = e.key.toUpperCase();
+
+  // Разрешаем только A–Z
+  if (!/^[A-Z]$/.test(key)) return;
+
+  // Находим кнопку на экране
+  const btn = [...document.querySelectorAll(".letter-btn")]
+    .find(b => b.textContent === key);
+
+  // Если кнопка уже нажата — игнорируем
+  if (!btn || btn.disabled) return;
+
+  // Имитируем клик
+  btn.click();
+});
+
+
 startGame();
