@@ -1,0 +1,19 @@
+body.light {
+  background: #f2f2f2;
+  color: #333;
+}
+
+body.dark {
+  background: #111;
+  color: #eee;
+}
+
+body.neon {
+  background: #000;
+  color: #0ff;
+}
+
+body.glass {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+}
