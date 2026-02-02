@@ -1,0 +1,20 @@
+.win-animation {
+  animation: winPulse 1s ease infinite alternate;
+}
+
+@keyframes winPulse {
+  from { transform: scale(1); color: #2ecc71; }
+  to   { transform: scale(1.1); color: #27ae60; }
+}
+
+.lose-animation {
+  animation: loseShake 0.4s ease 3;
+}
+
+@keyframes loseShake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}

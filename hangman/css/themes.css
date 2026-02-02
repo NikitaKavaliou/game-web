@@ -1,0 +1,32 @@
+:root {
+  --bg: #f2f2f2;
+  --text: #333;
+  --card: white;
+  --btn-bg: white;
+  --btn-border: #ccc;
+}
+
+/* DARK */
+body.dark {
+  --bg: #1a1a1a;
+  --text: #eee;
+  --btn-bg: #333;
+  --btn-border: #555;
+}
+
+/* NEON */
+body.neon {
+  --bg: #000;
+  --text: #0ff;
+  --btn-bg: #003333;
+  --btn-border: #0ff;
+}
+
+/* GLASS */
+body.glass {
+  --bg: url('../img/glass-bg.jpg');
+  --text: #fff;
+  --btn-bg: rgba(255,255,255,0.3);
+  --btn-border: rgba(255,255,255,0.5);
+  backdrop-filter: blur(10px);
+}
