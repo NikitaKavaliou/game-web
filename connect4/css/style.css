@@ -101,3 +101,48 @@
   animation: winFlash 1s infinite;
 }
 
+select {
+  margin-top: 15px;
+  padding: 10px 14px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  transition: 0.25s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #1976d2 50%),
+                    linear-gradient(135deg, #1976d2 50%, transparent 50%),
+                    linear-gradient(to right, #ccc, #ccc);
+  background-position: calc(100% - 20px) calc(50% - 6px),
+                       calc(100% - 15px) calc(50% - 6px),
+                       calc(100% - 40px) 50%;
+  background-size: 5px 5px, 5px 5px, 1px 20px;
+  background-repeat: no-repeat;
+}
+
+select:hover {
+  background-color: #f7f7f7;
+}
+
+select:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 8px rgba(25,118,210,0.4);
+}
+
+
+@keyframes dropSmooth {
+  0%   { transform: translateY(-220px) scale(0.9); opacity: 0; }
+  60%  { transform: translateY(10px) scale(1.03); opacity: 1; }
+  80%  { transform: translateY(-4px) scale(0.98); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+.cell.red,
+.cell.yellow {
+  animation: dropSmooth 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+

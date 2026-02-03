@@ -11,6 +11,7 @@ let board = [];
 let currentPlayer = "red";
 let gameOver = false;
 let mode = "pvp";
+let playerTurn = true; // важно: чтобы AI не играл сам с собой
 
 const boardEl = document.getElementById("board");
 const statusEl = document.getElementById("status");
@@ -22,6 +23,7 @@ function startGame() {
   gameOver = false;
   currentPlayer = "red";
   mode = modeEl.value;
+  playerTurn = true;
 
   renderBoard(boardEl, rows, cols, handleColumnClick);
   setStatus(statusEl, "Red's turn");
@@ -30,33 +32,19 @@ function startGame() {
 function handleColumnClick(col) {
   if (gameOver) return;
 
+  // если AI ходит — игрок не может кликать
+  if (mode !== "pvp" && !playerTurn) return;
+
   const row = getAvailableRow(board, col);
   if (row === -1) return;
 
-  play("drop");
-  dropPiece(board, row, col, currentPlayer);
-  updateUI(boardEl, row, col, currentPlayer);
+  makeMove(row, col);
 
-  const result = checkWin(board, row, col);
-
-  if (result && result.win) {
-    highlightWin(boardEl, result.cells);
-    play("win");
-    setStatus(statusEl, `${currentPlayer} wins!`);
-    gameOver = true;
-    return;
-  }
-
-  if (isBoardFull(board)) {
-    setStatus(statusEl, "It's a draw!");
-    gameOver = true;
-    return;
-  }
-
-  switchPlayer();
+  if (gameOver) return;
 
   if (mode !== "pvp") {
-    setTimeout(aiMove, 300);
+    playerTurn = false;
+    setTimeout(aiMove, 350);
   }
 }
 
@@ -71,6 +59,14 @@ function aiMove() {
   const row = getAvailableRow(board, col);
   if (row === -1) return;
 
+  makeMove(row, col);
+
+  if (!gameOver) {
+    playerTurn = true;
+  }
+}
+
+function makeMove(row, col) {
   play("drop");
   dropPiece(board, row, col, currentPlayer);
   updateUI(boardEl, row, col, currentPlayer);
@@ -93,7 +89,6 @@ function aiMove() {
 
   switchPlayer();
 }
-
 
 function switchPlayer() {
   currentPlayer = currentPlayer === "red" ? "yellow" : "red";
