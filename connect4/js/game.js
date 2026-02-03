@@ -68,8 +68,32 @@ function aiMove() {
       ? aiEasyMove(board)
       : aiHardMove(board, currentPlayer);
 
-  handleColumnClick(col);
+  const row = getAvailableRow(board, col);
+  if (row === -1) return;
+
+  play("drop");
+  dropPiece(board, row, col, currentPlayer);
+  updateUI(boardEl, row, col, currentPlayer);
+
+  const result = checkWin(board, row, col);
+
+  if (result && result.win) {
+    highlightWin(boardEl, result.cells);
+    play("win");
+    setStatus(statusEl, `${currentPlayer} wins!`);
+    gameOver = true;
+    return;
+  }
+
+  if (isBoardFull(board)) {
+    setStatus(statusEl, "It's a draw!");
+    gameOver = true;
+    return;
+  }
+
+  switchPlayer();
 }
+
 
 function switchPlayer() {
   currentPlayer = currentPlayer === "red" ? "yellow" : "red";
